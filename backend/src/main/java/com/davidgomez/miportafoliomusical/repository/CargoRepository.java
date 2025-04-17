@@ -1,4 +1,4 @@
 package com.davidgomez.miportafoliomusical.repository;
 
-public class CargoRepository {
+public interface CargoRepository {
 }
