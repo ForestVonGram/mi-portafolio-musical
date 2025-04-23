@@ -41,6 +41,21 @@ public class ConciertoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Concierto> actualizar(@PathVariable Long id, @RequestBody Concierto conciertoActualizado) {
+        return service.obtenerPorId(id)
+                .map(concierto -> {
+                    concierto.setTitulo(conciertoActualizado.getTitulo());
+                    concierto.setLugar(conciertoActualizado.getLugar());
+                    concierto.setFecha(conciertoActualizado.getFecha());
+                    concierto.setDescripcion(conciertoActualizado.getDescripcion());
+                    concierto.setPortadaUrl(conciertoActualizado.getPortadaUrl());
+                    Concierto actualizado = service.guardar(concierto);
+                    return ResponseEntity.ok(actualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         service.eliminar(id);
