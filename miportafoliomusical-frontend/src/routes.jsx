@@ -1,10 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Conciertos from './pages/Conciertos';
-import Composiciones from './pages/Composiciones';
-import Cargos from './pages/Cargos';
+import {Routes, Route} from "react-router-dom";
+import Home from "./pages/Home";
+import Conciertos from "./pages/Conciertos";
+import Composiciones from "./pages/Composiciones";
+import Cargos from "./pages/Cargos";
 
-const Router = () => {
+export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
@@ -12,7 +12,5 @@ const Router = () => {
             <Route path="/composiciones" element={<Composiciones />} />
             <Route path="/cargos" element={<Cargos />} />
         </Routes>
-    )
+    );
 }
-
-export default Router;
