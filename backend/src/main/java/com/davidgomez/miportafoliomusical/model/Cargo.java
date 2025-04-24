@@ -19,6 +19,8 @@ public class Cargo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String institucion;
+
     private String titulo;
 
     @Column(columnDefinition = "TEXT")
