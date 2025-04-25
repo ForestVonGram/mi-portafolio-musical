@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 function Cargos() {
     const [cargos, setCargos] = useState([]);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetch("http://localhost:8080/api/cargos")
@@ -21,6 +20,7 @@ function Cargos() {
                     <div className="absolute w-4 h-4 bg-blue-500 rounded-full -left-2.5 top-1.5"></div>
                     <h3 className="text-lg font-semibold">{cargo.institucion}</h3>
                     <p className="text-sm text-gray-600">{cargo.titulo}</p>
+                    <p className="text-sm text-gray-500 italic">{cargo.descripcion}</p>
                     <p className="text-sm text-gray-500">
                         {new Date(cargo.fechaInicio).toLocaleDateString()} — {cargo.fechaFin ? new Date(cargo.fechaFin).toLocaleDateString() : "Presente"}
                     </p>
