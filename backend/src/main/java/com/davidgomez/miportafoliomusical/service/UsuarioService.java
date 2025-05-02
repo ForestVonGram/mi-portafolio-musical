@@ -2,14 +2,18 @@ package com.davidgomez.miportafoliomusical.service;
 
 import com.davidgomez.miportafoliomusical.model.Usuario;
 import com.davidgomez.miportafoliomusical.repository.UsuarioRepository;
+import com.davidgomez.miportafoliomusical.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
 
@@ -49,5 +53,12 @@ public class UsuarioService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+        return new UserDetailsImpl(usuario);
     }
 }
