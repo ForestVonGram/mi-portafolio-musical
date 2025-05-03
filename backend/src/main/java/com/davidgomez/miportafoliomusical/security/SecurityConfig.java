@@ -21,9 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final UsuarioService usuarioService;
+    private final JwtUtil jwtUtil;
 
-    public SecurityConfig(UsuarioService usuarioService) {
+    public SecurityConfig(UsuarioService usuarioService, JwtUtil jwtUtil) {
         this.usuarioService = usuarioService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -55,20 +57,15 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuarios/registro", "/login", "/public/**").permitAll()
+                        .requestMatchers("/api/usuarios/registro", "/api/auth/login", "/public/**").permitAll()
                         .requestMatchers("/api/admin/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(new JwtAuthFilter(jwtUtil(), usuarioService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthFilter(jwtUtil, usuarioService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Bean
-    public JwtUtil jwtUtil() {
-        return new JwtUtil();
     }
 }
