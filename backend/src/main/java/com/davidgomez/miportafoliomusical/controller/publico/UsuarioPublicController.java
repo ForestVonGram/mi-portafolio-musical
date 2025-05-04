@@ -1,4 +1,4 @@
-package com.davidgomez.miportafoliomusical.controller;
+package com.davidgomez.miportafoliomusical.controller.publico;
 
 import com.davidgomez.miportafoliomusical.model.Usuario;
 import com.davidgomez.miportafoliomusical.service.UsuarioService;
@@ -11,12 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/usuarios")
 @CrossOrigin(origins = "*")
-public class UsuarioController {
+public class UsuarioPublicController {
 
     private final UsuarioService usuarioService;
 
     @Autowired
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioPublicController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
@@ -35,21 +35,5 @@ public class UsuarioController {
         return usuarioService.getUsuarioById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
-        return usuarioService.updateUsuario(id, usuarioActualizado)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-        if (usuarioService.deleteUsuario(id)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

@@ -1,29 +1,17 @@
-package com.davidgomez.miportafoliomusical.controller;
+package com.davidgomez.miportafoliomusical.controller.admin;
 
 import com.davidgomez.miportafoliomusical.model.Cargo;
 import com.davidgomez.miportafoliomusical.service.CargoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/api/cargos")
-public class CargoController {
+@RequestMapping("/api/admin/cargos")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
+public class CargoAdminController {
 
-    @Autowired
-    private CargoService service;
-
-    @GetMapping
-    public List<Cargo> obtenerTodos() {
-        return service.obtenerTodos();
-    }
-
-    @GetMapping("/{id}")
-    public Cargo obtenerPorId(@PathVariable Long id) {
-        return service.obtenerPorId(id).orElse(null);
-    }
+    private final CargoService service;
 
     @PostMapping
     public Cargo guardar(@RequestBody Cargo cargo) {

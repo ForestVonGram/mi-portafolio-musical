@@ -1,4 +1,4 @@
-package com.davidgomez.miportafoliomusical.controller;
+package com.davidgomez.miportafoliomusical.controller.admin;
 
 import com.davidgomez.miportafoliomusical.model.Concierto;
 import com.davidgomez.miportafoliomusical.service.ConciertoService;
@@ -13,32 +13,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/conciertos")
+@RequestMapping("/api/admin/conciertos")
 @CrossOrigin(origins = "http://localhost:5173")
-public class ConciertoController {
+public class ConciertoAdminController {
 
     @Autowired
     private ConciertoService service;
 
-    @GetMapping
-    public List<Concierto> listar() {
-        return service.listar();
-    }
-
     @PostMapping
     public Concierto guardar(@RequestBody Concierto concierto) {
         return service.guardar(concierto);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Concierto> obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
@@ -61,18 +48,8 @@ public class ConciertoController {
         service.eliminar(id);
     }
 
-    @GetMapping("/pasados")
-    public List<Concierto> conciertosPasados() {
-        return service.obtenerPasados();
-    }
-
-    @GetMapping("/proximos")
-    public List<Concierto> conciertosProximos() {
-        return service.obtenerProximos();
-    }
-
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImagen(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<String> uploadImagen(@RequestParam("file") MultipartFile file) {
         try {
             String folder = System.getProperty("user.dir") + "/uploads/";
             File directory = new File(folder);
