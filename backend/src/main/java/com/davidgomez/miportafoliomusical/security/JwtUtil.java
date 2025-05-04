@@ -3,6 +3,7 @@ package com.davidgomez.miportafoliomusical.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    @Getter
     private final Key key;
     private final long expiration;
 
@@ -28,6 +30,7 @@ public class JwtUtil {
     public String generateToken(String username) {
         return Jwts.builder()
                 .subject(username)
+                .claim("roles", "ROLE_ADMIN")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key)

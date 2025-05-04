@@ -22,10 +22,12 @@ public class SecurityConfig {
 
     private final UsuarioService usuarioService;
     private final JwtUtil jwtUtil;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public SecurityConfig(UsuarioService usuarioService, JwtUtil jwtUtil) {
+    public SecurityConfig(UsuarioService usuarioService, JwtUtil jwtUtil, BCryptPasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -34,15 +36,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(usuarioService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
@@ -58,7 +55,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/usuarios/registro", "/api/auth/login", "/public/**").permitAll()
-                        .requestMatchers("/api/admin/**").authenticated()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
