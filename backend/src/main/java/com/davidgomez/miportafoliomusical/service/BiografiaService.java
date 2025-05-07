@@ -11,7 +11,7 @@ import java.util.Optional;
 public class BiografiaService {
 
      @Autowired
-    private BiografiaRepository repository;
+     private BiografiaRepository repository;
 
      public Optional<Biografia> getBiografia() {
          return repository.findById(1L);
